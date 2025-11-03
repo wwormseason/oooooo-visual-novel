@@ -227,7 +227,6 @@ function preload() {
 }
 
 function setup() {
-  console.log("hi");
   createCanvas(windowWidth, windowHeight);
   textAlign(screenLeft, TOP);
   img1W = 0;
@@ -304,7 +303,6 @@ function draw() {
   if (currentPage != previousPage) {
     if (objects[currentPage].audio) {
       objects[currentPage].audio.play();
-      console.log("sound");
     }
     previousPage = currentPage;
   }
@@ -315,23 +313,18 @@ function keyPressed() {
     currentPage = 1;
   } else {
     const choice = parseInt(key);
-    console.log("choice", choice);
     if (!isNaN(choice)) {
-      console.log("page", currentPage);
       if (objects[currentPage].audio) {
         objects[currentPage].audio.stop();
       }
       if (currentPage == 5 || currentPage == 11 || currentPage == 14) {
-        console.log("dice");
         const roll = Math.floor(Math.random() * 21);
-        console.log(roll);
         if (roll < objects[currentPage].threshold) {
           currentPage = objects[currentPage].consequence[0];
         } else {
           currentPage = objects[currentPage].consequence[1];
         }
       } else if (currentPage == 19) {
-        console.log("sick");
         if (counters.salmonella < objects[currentPage].threshold) {
           currentPage = objects[currentPage].consequence[0];
         } else {
@@ -340,15 +333,86 @@ function keyPressed() {
       } else if (currentPage == 21) {
         currentPage++;
       } else if (currentPage == 24) {
-        console.log("end");
-        console.log(counters.travel);
         if (counters.travel < 5) {
           currentPage = objects[currentPage].consequence[0];
         } else {
           currentPage = objects[currentPage].consequence[1];
         }
       } else {
-        console.log("normal");
+        currentPage = objects[currentPage].consequence[choice - 1];
+      }
+    }
+  }
+}
+
+function mousePressed() {
+  if (
+    mouseX > width / 2.5 &&
+    mouseX < width / 2.5 + width / 3.5 &&
+    mouseY > height * 0.2 &&
+    mouseY < height * 0.2 + 50
+  ) {
+    const choice = 1;
+    if (objects[currentPage].audio) {
+      objects[currentPage].audio.stop();
+    }
+    if (currentPage == 5 || currentPage == 11 || currentPage == 14) {
+      const roll = Math.floor(Math.random() * 21);
+      if (roll < objects[currentPage].threshold) {
+        currentPage = objects[currentPage].consequence[0];
+      } else {
+        currentPage = objects[currentPage].consequence[1];
+      }
+    } else if (currentPage == 19) {
+      if (counters.salmonella < objects[currentPage].threshold) {
+        currentPage = objects[currentPage].consequence[0];
+      } else {
+        currentPage = objects[currentPage].consequence[1];
+      }
+    } else if (currentPage == 21) {
+      currentPage++;
+    } else if (currentPage == 24) {
+      if (counters.travel < 5) {
+        currentPage = objects[currentPage].consequence[0];
+      } else {
+        currentPage = objects[currentPage].consequence[1];
+      }
+    } else {
+      currentPage = objects[currentPage].consequence[choice - 1];
+    }
+  } else if (objects[currentPage].choiceText[1]) {
+    if (
+      mouseX > width / 2.5 &&
+      mouseX < width / 2.5 + width / 3.5 &&
+      mouseY > height * 0.4 &&
+      mouseY < height * 0.4 + 50
+    ) {
+      const choice = 2;
+      if (objects[currentPage].audio) {
+        objects[currentPage].audio.stop();
+      }
+      if (currentPage == 5 || currentPage == 11 || currentPage == 14) {
+        const roll = Math.floor(Math.random() * 21);
+        if (roll < objects[currentPage].threshold) {
+          currentPage = objects[currentPage].consequence[0];
+        } else {
+          currentPage = objects[currentPage].consequence[1];
+        }
+      } else if (currentPage == 19) {
+        if (counters.salmonella < objects[currentPage].threshold) {
+          currentPage = objects[currentPage].consequence[0];
+        } else {
+          currentPage = objects[currentPage].consequence[1];
+        }
+      } else if (currentPage == 21) {
+        currentPage++;
+      } else if (currentPage == 24) {
+        if (counters.travel < 5) {
+          currentPage = objects[currentPage].consequence[0];
+        } else {
+          currentPage = objects[currentPage].consequence[1];
+        }
+      } else {
         currentPage = objects[currentPage].consequence[choice - 1];
       }
     }
